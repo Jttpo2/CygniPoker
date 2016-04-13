@@ -566,3 +566,27 @@ function isPotNotRaised() {
     var bb = player.state.table.bigBlindAmount;
     return pot <= noOfPlayers()*bb;
 }
+
+// var stats;
+// function savePlayerStats(playerName, action) {
+//     for ()
+//         if (stats.players.name)
+//     player = {player}
+//     stats.players.
+// }
+
+// stats = {
+//     players = []
+// }
+// var player = {
+//     name: "ag"
+//     foldPercentage: 0.2
+//     callPercentage: 0.4
+//     raisePercentage: 0.4
+//     actions: {}
+// }
+
+// var stats = {
+//     players: [
+//     ]
+// }
