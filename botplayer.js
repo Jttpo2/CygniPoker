@@ -16,6 +16,10 @@ function getName() {
 
 */
 
+var db = require('./mongoConnection.js').mongoConnection();
+// console.log(db);
+// db.init();
+
 var stateUpdater = require('./modules/playerStateUpdater.js').playerStateUpdater();
 stateUpdater.playerName = getName();
 
