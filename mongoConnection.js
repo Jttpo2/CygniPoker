@@ -3,13 +3,9 @@ var mongoose = require('mongoose');
 
 exports.mongoConnection = function() {
 	'use strict';
-	// var url = 'mongodb://localhost:27017/test'
-	init();
-	// setup();
-
-	// var playerSchema = createPlayerSchema();
-	// var Player = mongoose.model('Player', playerSchema);
 	
+	init();
+
 	var Player;
 
 	function init() {

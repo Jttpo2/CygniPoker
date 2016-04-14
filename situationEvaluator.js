@@ -1,30 +1,9 @@
 exports.situationEvaluator = function() {
 
 	// var db = require('./mongoConnection.js').mongoConnection();
-	// if (db) {
-	// 	console.log('getting players');
-	// 	getAllPlayers();
-	// } else {
-	// 	console.log('db not ready');
-	// }
+
 	var state = {
 	}
-
-	// function shoulCallRaise(playerName, amount, state, callback) {
-	// 	var shouldCall = true;
-	// 	db.getPlayer(playerName, function(player) {
-	// 		if (player is loose) {
-	// 			call more
-	// 		}
-	// 	});
-
-
-	// 	return shouldCall;
-	// }
-
-	// function init() {
-	// 	getAllPlayers();
-	// }
 
 	function getAllPlayers() {
 		db.getAllPlayers(function(players) {
@@ -36,16 +15,6 @@ exports.situationEvaluator = function() {
 		var index = state.players.findIndex(x => x.name = playerName);
 		console.log("index: " + index);
 		return state.players[index];
-
-		// var player = state.players.filter(function(p) {
-		// 	return p.name === playerName;
-		// });
-
-		// for (player of state.players) {
-		// 	if (player.name === playerName) {
-		// 		return player;
-		// 	}
-		// }
 	}
 
 	function replacePlayer(playerName, playerObject) {
@@ -83,7 +52,6 @@ exports.situationEvaluator = function() {
 		shouldIBluffRaiseAgainst: shouldIBluffRaiseAgainst,
 		shouldICallRaiseAgainst: shouldICallRaiseAgainst,
 		getPlayer: getPlayer,
-		// init: init
 	}
 
 	return evaluator;
