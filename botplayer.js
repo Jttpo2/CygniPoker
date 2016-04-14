@@ -162,12 +162,15 @@ var player = {
 
         var chosenAction = checkAction || callAction || raiseAction || foldAction || allInAction;
         
+
         console.log(player.state);
         var hand = player.state.myCards;
         switch (player.state.table.state) {
             case 'PRE_FLOP': 
                 if (isAllInHand(hand)) {
                     chosenAction = allInAction;
+                } else if (isRaisableHand(hand)) {
+                    chosenAction = raiseAction || checkAction || callAction || allInAction;
                 } else if (isPlayableHand(hand)) {
                     // chosenAction = raiseAction || checkAction || callAction || allInAction;
                     if (randomRaise()) {
@@ -192,7 +195,7 @@ var player = {
                 }
                 break;
             case 'FLOP':
-                if (gotFullHouse(hand) || gotFlush(hand)) {
+                if (gotFullHouse(hand) || gotFlush(hand) || gotStraight(hand)) {
                     // All in on full house or flush
                     chosenAction = allInAction;
                 } else if (getMultiplesAmountOneCard(hand[0]) === 4 || getMultiplesAmountOneCard(hand[1]) === 4 || gotThreeOfAKind(hand)) {
@@ -282,22 +285,20 @@ function isAllInHand(hand) {
     var card1 = hand[0];
     var card2 = hand[1];
 
-    if (card1.rank === 'ACE' && isPair(card1, card2) || 
-        card2.rank === 'KING' && isPair(card1, card2) ) {
-        // AA and KK
-        return true; 
-    } else if (isPair(card1, card2) && getRank(card1) >= 12) {
-            // Pair Queen or higher
-         return true;
-    }
+    // if (card1.rank === 'ACE' && isPair(card1, card2) || 
+    //     card1.rank === 'KING' && isPair(card1, card2) ||
+    //     card1.rank === 'QUEEN' && isPair(card1, card2)) {
+    //     // AA and KK
+    //     return true; 
+    // }
     if (noOfPlayers() <= 3) {
         // console.log('********************* Three or less');
         // Three players or less
         if (card1.rank === 'ACE' && isTopTwo(card2) && areSuited(card1, card2) || 
             card2.rank === 'ACE' && isTopTwo(card1) && areSuited(card1, card2)) {
             return true; 
-        } else if (isPair(card1, card2) && getRank(card1) >= 10) {
-            // Pair 10 or higher
+        } else if (isPair(card1, card2) && getRank(card1) >= 13) {
+            // Pair 11 or higher
             return true;
         } 
     } else if (isHeadsUp()) {
@@ -305,12 +306,34 @@ function isAllInHand(hand) {
         if (card1.rank === 'ACE' && isTopThree(card2) || 
             card2.rank === 'ACE' && isTopThree(card1) || 
             (areFollowing(card1, card2) && areSuited(card1, card2)) && highCardRank(hand) >= 10 ||
-            isPair(card1, card2) && getRank(card1) >= 5) {
+            isPair(card1, card2) && getRank(card1) >= 7) {
             // Ace-queen, Following and suited (10 or higher), pairs higher than 4
             return true;
         }
     }
     return false;
+}
+
+function isRaisableHand(hand) {
+    var card1 = hand[0];
+    var card2 = hand[1];
+    if (isPair(card1, card2) && getRank(card1) >= 11 ||
+        areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 12) {
+        return true; 
+    } 
+    if (noOfPlayers() <= 3) {
+        if (isPair(card1, card2) && getRank(card1) >= 8 ||
+            areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 9) {
+            return true;
+        } 
+    } else if (isHeadsUp()) {
+        if (isPair(card1, card2) && getRank(card1) >= 5 ||
+            areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 5) {
+            return true; 
+        }
+    } 
+    return false;
+    
 }
 
 function getRank(card) {
@@ -559,4 +582,41 @@ function isPotNotRaised() {
     var pot = player.state.potTotal;
     var bb = player.state.table.bigBlindAmount;
     return pot <= noOfPlayers()*bb;
+}
+
+function gotStraight(hand) {
+    var cardsOnTable = player.state.communityCards;
+
+    // Check what cards are in play
+    var allCards = [];
+    for (let i=0; i<14; i++) {
+        allCards[i] = false;
+    }
+
+    for (let c of cardsOnTable) {
+        allCards[getRank(c)-1] = true;
+    }
+    allCards[getRank(hand[0])-1] = true;
+    allCards[getRank(hand[1])-1] = true;
+    
+    // Count the number of cards in a row
+    var counter = 0;
+    var max = 0;
+    for (let i=0; i<allCards.length; i++) {
+
+        if (allCards[i] === true) {
+            counter++;
+            if (counter > max) {
+                max = counter;
+            }
+        } else {
+            counter = 0;
+        }
+    }
+
+    if (max >= 5) {
+        console.log('************************* STRAIGHT *******************');
+    }
+
+    return max >= 5;
 }
