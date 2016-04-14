@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
-// var evaluator = require('./situationEvaluator.js').situationEvaluator();
 
 exports.mongoConnection = function() {
 	'use strict';
-	
+
 	init();
 
 	var Player;
