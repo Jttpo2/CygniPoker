@@ -6,19 +6,36 @@ exports.situationEvaluator = function(db) {
 	function getAllPlayers() {
 		db.getAllPlayers(function(players) {
 			state.players = players;
+			// console.log(players);
+			var testPlayer = state.players.findIndex(function(element, index, array) {
+				return element.name === 'Raiser';
+			});
+			console.log(testPlayer);
 		});
 	}
 
 	function getPlayer(playerName) {
-		var index = state.players.findIndex(x => x.name = playerName);
-		console.log("index: " + index);
-		return state.players[index];
+		if (state.players) {
+
+
+
+			console.log('existing players: ' + state.players);
+			var index = state.players.findIndex(x => x.name = playerName);
+			console.log("index: " + index);
+			return state.players[index];
+			
+		} else {
+			getAllPlayers();
+		}
+		
 	}
 
 	function replacePlayer(playerName, playerObject) {
-		for (player of state.players) {
-			if (player.name === playerName) {
-				
+		if (state.players) {
+			for (player of state.players) {
+				if (player.name === playerName) {
+					
+				}
 			}
 		}
 	}
@@ -26,9 +43,9 @@ exports.situationEvaluator = function(db) {
 	function shouldIBluffRaiseAgainst(playerName) {
 		db.getPlayer(playerName, function(player) {
 			if (player.foldPercentage > 0.5) {
-				callback(true);
+				
 			} else {
-				callback(false);
+				
 			}
 		});	
 		return false;

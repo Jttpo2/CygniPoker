@@ -1,3 +1,5 @@
+'use strict';
+
 require('./modules/sugar-1.3.min.js');
 
 var ranks = ['ACE', 'DEUCE', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'JACK', 'QUEEN', 'KING', 'ACE'];
@@ -17,7 +19,7 @@ function getName() {
 */
 
 var db = require('./mongoConnection.js').mongoConnection();
-var evaluator = require('./situationEvaluator').situationEvaluator(db);
+// var evaluator = require('./situationEvaluator').situationEvaluator(db);
 
 var stateUpdater = require('./modules/playerStateUpdater.js').playerStateUpdater();
 stateUpdater.playerName = getName();
@@ -58,7 +60,7 @@ var player = {
         // db.getPlayer(event.player.name, function(player) {
         //      console.log(player.name + " called. " + player.raisePercentage);
         // });
-        evaluator.getPlayer(event.player.name);
+        // evaluator.getPlayer(event.player.name);
     },
 
     onPlayerCheckedEvent : function (event) {
@@ -82,9 +84,9 @@ var player = {
     onPlayerRaisedEvent : function (event) {
         // console.log('Player Raised');
         db.logRaise(event.player.name);
-        db.getPlayer(event.player.name, function(player) {
-             console.log(player.name + " raised." + player.raisePercentage);
-        });
+        // db.getPlayer(event.player.name, function(player) {
+        //      console.log(player.name + " raised." + player.raisePercentage);
+        // });
     },
 
     onPlayerWentAllInEvent : function (event) {
