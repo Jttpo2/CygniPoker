@@ -58,7 +58,7 @@ var player = {
         // db.getPlayer(event.player.name, function(player) {
         //      console.log(player.name + " called. " + player.raisePercentage);
         // });
-        // evaluator.getPlayer(event.player.name);
+        evaluator.getPlayer(event.player.name);
     },
 
     onPlayerCheckedEvent : function (event) {
