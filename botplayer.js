@@ -17,7 +17,7 @@ function getName() {
 */
 
 var db = require('./mongoConnection.js').mongoConnection();
-var evaluator = require('./situationEvaluator').situationEvaluator();
+var evaluator = require('./situationEvaluator').situationEvaluator(db);
 
 var stateUpdater = require('./modules/playerStateUpdater.js').playerStateUpdater();
 stateUpdater.playerName = getName();

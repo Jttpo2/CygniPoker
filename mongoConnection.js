@@ -20,8 +20,7 @@ exports.mongoConnection = function() {
 	}
 
 	function setupSchemas() {
-		Player = createPlayerSchema();
-		
+		Player = createPlayerSchema();			
 	}
 
 	function createPlayerSchema() {
