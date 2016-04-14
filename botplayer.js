@@ -119,6 +119,9 @@ var player = {
      //        console.log('I Lost');
      //    }
         // console.log('I'am the winner: '+stateUpdater.amIWinner());
+        // console.log(event);
+        db.logGameResult(event.players);
+        // db.disconnect();
     },
 
     onYouHaveBeenDealtACardEvent : function (event) {
@@ -317,13 +320,13 @@ function isAllInHand(hand) {
 function isRaisableHand(hand) {
     var card1 = hand[0];
     var card2 = hand[1];
-    if (isPair(card1, card2) && getRank(card1) >= 11 ||
-        areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 12) {
+    if (isPair(card1, card2) && getRank(card1) >= 12 ||
+        areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 14) {
         return true; 
     } 
     if (noOfPlayers() <= 3) {
-        if (isPair(card1, card2) && getRank(card1) >= 8 ||
-            areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 9) {
+        if (isPair(card1, card2) && getRank(card1) >= 10 ||
+            areSuited(card1, card2) && areFollowing(card1, card2) && highCardRank(hand) >= 12) {
             return true;
         } 
     } else if (isHeadsUp()) {
@@ -396,9 +399,9 @@ function isPlayableHand(hand) {
 
 function areFollowing(card1, card2) {
     if (card1.rank === 'ACE') {
-        return card2.rank === 'KING' || card2.rank === 'DEUCE';
+        return card2.rank === 'KING'; //|| card2.rank === 'DEUCE'; // Fuck A2
     } else if (card2.rank === 'ACE') {
-        return card1.rank === 'KING' || card1.rank === 'DEUCE';
+        return card1.rank === 'KING'; // || card1.rank === 'DEUCE';
     }
     var index = ranks.indexOf(card1.rank);
     return card2.rank === ranks[index-1] || card2.rank === ranks[index+1];

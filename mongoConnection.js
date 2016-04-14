@@ -19,6 +19,10 @@ exports.mongoConnection = function() {
 		});
 	}
 
+	function disconnect() {
+		mongoose.disconnect();
+	}
+
 	function setupSchemas() {
 		Player = createPlayerSchema();			
 	}
@@ -30,7 +34,9 @@ exports.mongoConnection = function() {
 		    checks: {type: Number, default: 0},
 		    calls: {type: Number, default: 0},
 		    raises: {type: Number, default: 0},
-		    allins: {type: Number, default: 0}
+		    allins: {type: Number, default: 0},
+		    wins: {type: Number, default: 0},
+		    losses: {type: Number, default: 0}
 		});
 
 		playerSchema.virtual('foldPercentage').get(function() {
@@ -99,19 +105,45 @@ exports.mongoConnection = function() {
 	function getAllPlayers(callback) {
 		Player.find({}, function(err, players) {
 			if (err) console.log(err);
-			callback(players);
+				callback(players);
 		});
 	}
 
+	function logGameResult(players) {
+		for (let p of players) {
+			if (p.chipCount === 0) {
+				Player.findOneAndUpdate({name: p.name}, {$inc: {losses: 1}}, {new: true, upsert: true}, function(err, player) {
+					if (err) console.log(err);
+				});
+			} else {
+				Player.findOneAndUpdate({name: p.name}, {$inc: {wins: 1}}, {new: true, upsert: true}, function(err, player) {
+					if (err) console.log(err);
+				});
+			}
+		}
+	}
+
+	var gracefulExit = function() { 
+		mongoose.connection.close(function () {
+	    	console.log('Mongoose default connection with DB :' + ' is disconnected through app termination');
+	    	process.exit(0);
+  		});
+	}
+
+	// If the Node process ends, close the Mongoose connection
+	process.on('SIGINT', gracefulExit).on('SIGTERM', gracefulExit);
+
 	var mongo = {
 		init: init,
+		disconnect: disconnect,
 		logRaise: logRaise,
 		logFold: logFold,
 		logCheck: logCheck,
 		logCall: logCall,
 		logAllIn: logAllIn,
 		getPlayer: getPlayer,
-		getAllPlayers: getAllPlayers
+		getAllPlayers: getAllPlayers,
+		logGameResult: logGameResult
 	};
 
 	return mongo;
