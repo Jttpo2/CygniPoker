@@ -416,12 +416,10 @@ function getMultiplesAmount() {
     if (hand[0].rank === hand[1].rank) {
         counter++;
     }
-    // console.log('mul: ', counter);
     return counter;
 }
 
 function getMultiplesAmountOneCard(card) {
-    // var hand = player.state.myCards;
     var cardsOnTable = player.state.communityCards;
     var counter = 1;
     for (var c of cardsOnTable) {
@@ -429,30 +427,9 @@ function getMultiplesAmountOneCard(card) {
             counter++;
         }
     }
-    
-    // if (card.rank === card.rank) {
-    //     counter++;
-    // }
-    // console.log('mul: ', counter);
     return counter;
 }
 
-// function getMultipleRank() {
-//     var hand = player.state.myCards;
-//     var cardsOnTable = player.state.communityCards;
-//     var counter = 1;
-//     for (var card of hand) {
-//         for (var c of cardsOnTable) {
-//             if (card.rank ===  c.rank) {
-//                 counter++;
-//             }
-//         }
-//     }
-//     if (hand[0].rank === hand[1].rank) {
-//         counter++;
-//     }
-//     return 
-// }
 
 function gotThreeOfAKind(hand) {
     var cardsOnTable = player.state.communityCards;
@@ -581,27 +558,3 @@ function isPotNotRaised() {
     var bb = player.state.table.bigBlindAmount;
     return pot <= noOfPlayers()*bb;
 }
-
-// var stats;
-// function savePlayerStats(playerName, action) {
-//     for ()
-//         if (stats.players.name)
-//     player = {player}
-//     stats.players.
-// }
-
-// stats = {
-//     players = []
-// }
-// var player = {
-//     name: "ag"
-//     foldPercentage: 0.2
-//     callPercentage: 0.4
-//     raisePercentage: 0.4
-//     actions: {}
-// }
-
-// var stats = {
-//     players: [
-//     ]
-// }

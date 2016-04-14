@@ -26,7 +26,6 @@ exports.situationEvaluator = function() {
 	}
 
 	function shouldIBluffRaiseAgainst(playerName) {
-		
 		db.getPlayer(playerName, function(player) {
 			if (player.foldPercentage > 0.5) {
 				callback(true);
