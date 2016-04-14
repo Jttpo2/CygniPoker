@@ -17,8 +17,7 @@ function getName() {
 */
 
 var db = require('./mongoConnection.js').mongoConnection();
-// console.log(db);
-// db.init();
+var evaluator = require('./situationEvaluator').situationEvaluator();
 
 var stateUpdater = require('./modules/playerStateUpdater.js').playerStateUpdater();
 stateUpdater.playerName = getName();
@@ -55,14 +54,21 @@ var player = {
 
     onPlayerCalledEvent : function (event) {
         // console.log('Player called');
+        db.logCall(event.player.name);
+        // db.getPlayer(event.player.name, function(player) {
+        //      console.log(player.name + " called. " + player.raisePercentage);
+        // });
+        // evaluator.getPlayer(event.player.name);
     },
 
     onPlayerCheckedEvent : function (event) {
         // console.log('Player checked');
+        db.logCheck(event.player.name);
     },
 
     onPlayerFoldedEvent : function (event) {
         // console.log('Player folded');
+        db.logFold(event.player.name);
     },
 
     onPlayerForcedFoldedEvent : function (event) {
@@ -75,10 +81,15 @@ var player = {
 
     onPlayerRaisedEvent : function (event) {
         // console.log('Player Raised');
+        db.logRaise(event.player.name);
+        db.getPlayer(event.player.name, function(player) {
+             console.log(player.name + " raised." + player.raisePercentage);
+        });
     },
 
     onPlayerWentAllInEvent : function (event) {
         // console.log('Player went All in');
+        db.logAllIn(event.player.name);
     },
 
     onServerIsShuttingDownEvent : function (event) {
